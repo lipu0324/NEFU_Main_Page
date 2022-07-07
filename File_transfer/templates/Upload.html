@@ -1,0 +1,52 @@
+<head>
+    <meta charset="utf-8">
+    <!--  页面名称是上传页面  -->
+    <title>上传页面</title>
+</head>
+<body>
+
+    <form action="\upload\" method="post" enctype="multipart/form-data" >
+        <fieldset>
+            <legend>上传文件</legend>
+            {% csrf_token %}
+            上传者:<input type="text" name="sender" placeholder="上传学号(可空)"><br>
+            接收者:<input type="text" name= "receive" placeholder="接收者(必填)" ><br>
+            <label for="file">文件名：</label>
+            <input type="file" name="file" id="file"><br>
+            <input type="button" value="加密" onclick="Sender_encryption()">
+            <input type="submit" value="上传">
+        </fieldset>
+    </form>
+
+
+
+
+
+<script type="text/javascript">
+    //import CryptoJS from 'crypto-js';
+    function Sender_encryption() {
+        //获取上传者
+        var sender = document.getElementsByName("sender")[0].value;
+        //获取接收者
+        var receive = document.getElementsByName("receive")[0].value;
+        if (receive == "") {
+            alert("接收者不能为空");
+            return 0;
+        }
+        //对receive进行sha256加密
+        var receive_sha256 = CryptoJS.SHA256(receive);
+        //假如sender不为空，则对sender进行sha256加密
+        if (sender != "")
+        {
+            var sender_sha256 = CryptoJS.SHA256(sender).toString();
+        }
+        alert(receive_sha256);
+        //将receive_sha256和sender_sha256赋值给表单
+        document.getElementsByName("receive")[0].value = receive_sha256;
+        if (sender != "") {
+            document.getElementsByName("sender")[0].value = sender_sha256;
+        }
+        return 1;
+    }
+</script>
+</body>

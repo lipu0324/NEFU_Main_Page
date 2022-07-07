@@ -1,0 +1,7 @@
+{
+  "name": "nefu_start_page_manager",
+  "version": "1.0.0",
+  "dependencies": {
+    "crypto-js": "^4.1.1"
+  }
+}
