@@ -19,4 +19,5 @@ from File_transfer import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('upload/', views.upload, name='上传'),
+    path('download/', views.download, name='下载'),
 ]

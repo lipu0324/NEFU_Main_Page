@@ -1,0 +1,20 @@
+<head>
+    <meta charset="utf-8">
+    <!--  页面名称是上传页面  -->
+    <title>下载页面</title>
+</head>
+<body>
+
+    <form action="/download/" method="post"  >
+        <fieldset>
+            <legend>下载文件</legend>
+            {% csrf_token %}
+            下载编码:<input type="text" name="downloader" placeholder="输入你拿到的下载编码"><br>
+            <input type="submit" value="列表">
+        </fieldset>
+    </form>
+<fieldset>
+    <legend>可下载文件列表</legend>
+    {{ download_list }}
+</fieldset>
+</body>
