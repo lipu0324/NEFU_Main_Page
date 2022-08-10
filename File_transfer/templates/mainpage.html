@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>起始页捏</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <title>Title</title>
+    <script src="../static/vue.js"></script>
+    <style>
+        #root {
+            width: 100%;
+            height: 100%;
+            /* 加边框 */
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<!-- body的背景图片为全屏拉伸 -->
+<body style="background-image: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2Ff4%2F6c%2F1c%2Ff46c1c4d5dbee45fade6a85de81edba9.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662696126&t=7dfe29fad3c917d63e6eabb2191c18be);background-size: cover;">
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="static/img.png" alt="logo" style="width:40px;">
+    </a>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="">首页</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="">文件传输</a>
+        </li>
+        <li class="nav-item">
+            <!-- 下拉菜单显示‘常用网页’ -->
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-bs-toggle="dropdown">
+                常用网页
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="">东北林业大学教务处课程管理系统</a>
+                <a class="dropdown-item" href="">瑞格平台</a>
+                <a class="dropdown-item" href="">OJ平台</a>
+                <a class="dropdown-item" href="https://www.github.com/" target="_blank">Github</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<!-- 居中百度搜索框 -->
+<div class="container" style="margin-top: 20px;" id="searchbar">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="请输入关键字,选择对应搜索引擎搜索" aria-label="keyWord" aria-describedby="basic-addon2" v-model="search">
+                <div class="input-group-append">
+                    <div class="btn-group">
+                         <button type="button" class="btn btn-primary" data-bs-toggle="dropdown" @click="sousuo('baidu')">百度</button>
+                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" >搜索引擎</button>
+                             <ul class="dropdown-menu">
+                                 <li><a class="dropdown-item" @click="sousuo('google')">谷歌</a></li>
+                                 <li><a class="dropdown-item" @click="sousuo('biying')">必应</a></li>
+                                 <li><a class="dropdown-item" @click="sousuo('github')">GitHub</a></li>
+                                 <li><a class="dropdown-item" @click="sousuo('csdn')"> CSDN</a> </li>
+                             </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var vm = new Vue({
+        el: '#searchbar',
+        data: {
+            search: '',
+
+        },
+        methods: {
+            sousuo: function (input) {
+                //根据input的值在不同搜索引擎上搜索
+                switch (input) {
+                    case 'baidu':
+                        window.open('https://www.baidu.com/s?wd=' + this.search);
+                        break;
+                    case 'google':
+                        window.open('https://www.google.com/search?q=' + this.search);
+                        break;
+                    case 'biying':
+                        window.open('https://www.bing.com/search?q=' + this.search);
+                        break;
+                    case 'github':
+                        window.open('https://www.github.com/search?q=' + this.search);
+                        break;
+                    case 'csdn':
+                        window.open('https://so.csdn.net/so/search/s.do?q=' + this.search);
+                        break;
+                }
+            }
+        }
+    });
+</script>
+</html>

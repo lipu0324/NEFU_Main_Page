@@ -7,6 +7,6 @@ class File_reg(models.Model):
     File_name = models.CharField(max_length=100)
     File_path = models.CharField(max_length=100)
     Upload_time = models.DateTimeField(auto_now_add=True)
-    Upload_user = models.CharField(max_length=256,null=True)
+    Upload_user = models.CharField(max_length=256 , null=True)
     Recieve_user = models.CharField(max_length=256)
-    Encryption_status = models.BooleanField(default=False)
+    cryption_status = models.BooleanField(default=False)

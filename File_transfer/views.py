@@ -37,3 +37,5 @@ def download(request):
     print(file_list)
     return render(request, 'download.html', {'download_list': file_list})
 
+def mainpage(request):
+    return render(request, 'mainpage.html')
