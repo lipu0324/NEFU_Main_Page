@@ -11,16 +11,14 @@
     <title>Title</title>
     <script src="../static/vue.js"></script>
     <style>
-        #root {
-            width: 100%;
-            height: 100%;
-            /* 加边框 */
-            border: 1px solid #000;
+        #main{
+            background-image: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fphoto%2F2011-9-13%2Fenterdesk.com-276CCE55A1EF014E902B5F76CFF7E389.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662801815&t=89aaf014cc16c8c4cadbbe9c622ee225);
+            background-size:cover;
         }
     </style>
 </head>
 <!-- body的背景图片为全屏拉伸 -->
-<body style="background-image: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2Ff4%2F6c%2F1c%2Ff46c1c4d5dbee45fade6a85de81edba9.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662696126&t=7dfe29fad3c917d63e6eabb2191c18be);background-size: cover;">
+<body id="main" >
 <!-- 导航栏 -->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <a class="navbar-brand" href="#">
@@ -39,23 +37,24 @@
                 常用网页
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="">东北林业大学教务处课程管理系统</a>
-                <a class="dropdown-item" href="">瑞格平台</a>
-                <a class="dropdown-item" href="">OJ平台</a>
+                <a class="dropdown-item" href="https://jwc.nefu.edu.cn/index/jwglxt.htm"  target="_blank">东北林业大学教务处课程管理系统</a>
+                <a class="dropdown-item" href="http://222.27.166.246/studentHome/index"  target="_blank">瑞格平台</a>
+                <a class="dropdown-item" href="https://acm.webvpn.nefu.edu.cn/" target="_blank">OJ平台</a>
                 <a class="dropdown-item" href="https://www.github.com/" target="_blank">Github</a>
             </div>
         </li>
     </ul>
 </nav>
+<br/><br/><br/>
 <!-- 居中百度搜索框 -->
 <div class="container" style="margin-top: 20px;" id="searchbar">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="请输入关键字,选择对应搜索引擎搜索" aria-label="keyWord" aria-describedby="basic-addon2" v-model="search">
                 <div class="input-group-append">
                     <div class="btn-group">
-                         <button type="button" class="btn btn-primary" data-bs-toggle="dropdown" @click="sousuo('baidu')">百度</button>
+                         <button type="button" class="btn btn-primary"  @click="sousuo('baidu')">百度</button>
                          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" >搜索引擎</button>
                              <ul class="dropdown-menu">
                                  <li><a class="dropdown-item" @click="sousuo('google')">谷歌</a></li>
@@ -69,13 +68,49 @@
         </div>
     </div>
 </div>
+<br/><br/>
+<div class="container mt-2" id="main-block" >
+    <div class="row">
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2 ">
+            <!-- 可点击图片 -->
+            <img src="static/mail_logo.png" alt="img" style="width:100px;height:100px;" @click="Common_websites('mail')">
+        </div>
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2">
+            <!-- 可点击图片 -->
+            <img src="static/webvpn_logo.png" alt="img" style="width:100px;height:100px;" @click="Common_websites('webVPN')">
+        </div>
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2">
+            <!-- 可点击图片 -->
+            <img src="static/Oj_logo.png" alt="img" style="width:100px;height:100px;" @click="Common_websites('Oj')">
+        </div>
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2">
+            <!-- 可点击图片 -->
+            <br/>
+            <img src="static/Inefu_logo.png" alt="img" style="width:220px;height:60px;"   @click="Common_websites('Inefu')">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2 ">东林邮件系统</div>
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2 ">东林网络VPN</div>
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OJ平台</div>
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-2 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数字东林</div>
+    </div>
+
+</div>
 </body>
 <script>
     var vm = new Vue({
         el: '#searchbar',
         data: {
             search: '',
-
         },
         methods: {
             sousuo: function (input) {
@@ -100,5 +135,29 @@
             }
         }
     });
+    var main_block =new Vue({
+        el: '#main-block',
+        data:{
+
+        },
+        methods: {
+            Common_websites:function (input){
+               switch (input){
+                   case 'mail':
+                       window.open('http://smtp.nefu.edu.cn/');
+                       break;
+                     case 'webVPN':
+                         window.open('https://webvpn.nefu.edu.cn/');
+                         break;
+                   case 'Oj':
+                       window.open('https://acm.webvpn.nefu.edu.cn/');
+                       break;
+                   case 'Inefu':
+                       window.open('https://i.webvpn.nefu.edu.cn/');
+                       break;
+                   }
+            }
+        }
+    })
 </script>
 </html>
