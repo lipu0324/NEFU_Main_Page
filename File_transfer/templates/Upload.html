@@ -22,7 +22,6 @@
     </style>
 </head>
 <body id="main">
-{% load static %}
 <nav class="navbar navbar-expand bg-dark navbar-dark">
     <a class="navbar-brand" href="#">
         <img src="{% static 'picture/img.png' %}" alt="logo" style="width:40px;">
@@ -60,12 +59,12 @@
     <h1>上传文件</h1><br/>
     <!-- 两个输入框,分别输入发件学号和收件学号 -->
     <div class="form-group" >
-        <label for="exampleInputEmail1">发件学号(可留空)</label>
+        <label>发件学号(可留空)</label>
         <input type="text" class="form-control" placeholder="请输入发件学号" v-model="sender"><br/>
-        <label for="exampleInputEmail1">收件学号(可留空)</label>
+        <label >收件学号(可留空)</label>
         <input type="text" class="form-control" placeholder="请输入收件学号" v-model="receiver"><br/>
         <button type="button" class="btn btn-primary" @click="calculate">计算文件代码</button>
-        <button type="button" class="btn btn-primary" @click="upload">上传文件</button>
+        <button type="button" class="btn btn-primary" >上传文件</button>
         <br/><br/>
         <!-- 不可写的输入框 -->
         <input type="text" class="form-control"  placeholder="文件代码" v-model="file_code" readonly><br/>
