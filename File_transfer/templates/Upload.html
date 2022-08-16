@@ -1,52 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    {% load static %}
     <meta charset="utf-8">
     <!--  页面名称是上传页面  -->
     <title>上传页面</title>
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'JavaScript/vue.js' %}"></script>
+    <script src="{% static 'JavaScript/md5.js' %}"></script>
+    <style>
+        #main{
+            background-image: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2019-04-11%2F5caeac2eeb50d.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662872346&t=15a64e6669cc3109f6b28c1e7151d1c3);
+            background-size:cover;
+        }
+        #input{
+            max-width: 600px;
+        }
+    </style>
 </head>
-<body>
-<div>
-    <form action="\upload\" method="post" enctype="multipart/form-data" >
-        <fieldset>
-            <legend>上传文件</legend>
-            {% csrf_token %}
-            上传者:<input type="text" name="sender" placeholder="上传学号(可空)"><br>
-            接收者:<input type="text" name= "receive" placeholder="接收者(必填)" ><br>
-            <label for="file">文件名：</label>
-            <input type="file" name="file" id="file"><br>
-            <input type="button" value="加密" onclick="Sender_encryption()">
-            <input type="submit" value="上传">
-        </fieldset>
-    </form>
+<body id="main">
+{% load static %}
+<nav class="navbar navbar-expand bg-dark navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'picture/img.png' %}" alt="logo" style="width:40px;">
+    </a>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="upload/">文件传输</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="download/">文件下载</a>
+        </li>
+        <li class="nav-item">
+            <!-- 下拉菜单显示‘常用网页’ -->
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-bs-toggle="dropdown">
+                常用网页
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="https://jwc.nefu.edu.cn/index/jwglxt.htm"  target="_blank">东北林业大学教务处课程管理系统</a>
+                <a class="dropdown-item" href="http://222.27.166.246/studentHome/index"  target="_blank">瑞格平台</a>
+                <a class="dropdown-item" href="https://acm.webvpn.nefu.edu.cn/" target="_blank">OJ平台</a>
+                <a class="dropdown-item" href="https://www.github.com/" target="_blank">Github</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<br/>
+<div class="container bg-success text-dark">
+使用方法：输入收件人学号和发件人学号（可空），网页会在本地根据目前时间和收发件学号计算出唯一且不可逆的文件代号，任何人可以凭此文件代号下载文件。<br/>
+    加密算法不可逆，未加密信息不会进入服务器
 </div>
-
-
-
-
-<script type="text/javascript">
-    //import CryptoJS from 'crypto-js';
-    function Sender_encryption() {
-        //获取上传者
-        var sender = document.getElementsByName("sender")[0].value;
-        //获取接收者
-        var receive = document.getElementsByName("receive")[0].value;
-        if (receive == "") {
-            alert("接收者不能为空");
-            return 0;
-        }
-        //对receive进行sha256加密
-        var receive_sha256 = CryptoJS.SHA256(receive);
-        //假如sender不为空，则对sender进行sha256加密
-        if (sender != "")
-        {
-            var sender_sha256 = CryptoJS.SHA256(sender).toString();
-        }
-        alert(receive_sha256);
-        //将receive_sha256和sender_sha256赋值给表单
-        document.getElementsByName("receive")[0].value = receive_sha256;
-        if (sender != "") {
-            document.getElementsByName("sender")[0].value = sender_sha256;
-        }
-        return 1;
-    }
-</script>
+<div class="container p-5 my-5 border " id="input">
+    <h1>上传文件</h1><br/>
+    <!-- 两个输入框,分别输入发件学号和收件学号 -->
+    <div class="form-group" >
+        <label for="exampleInputEmail1">发件学号(可留空)</label>
+        <input type="text" class="form-control" placeholder="请输入发件学号" v-model="sender"><br/>
+        <label for="exampleInputEmail1">收件学号(可留空)</label>
+        <input type="text" class="form-control" placeholder="请输入收件学号" v-model="receiver"><br/>
+        <button type="button" class="btn btn-primary" @click="calculate">计算文件代码</button>
+        <button type="button" class="btn btn-primary" @click="upload">上传文件</button>
+        <br/><br/>
+        <!-- 不可写的输入框 -->
+        <input type="text" class="form-control"  placeholder="文件代码" v-model=" file_code" readonly><br/>
+    </div>
+</div>
+<div class="container" style="margin-top: 20px;" id="footer">
+    <div class="row">
+        <div class="col-12">
+            <small>Copyright <a href="https://www.nefuwzp.site/" target="_blank">lipu</a> 2022
+            <br/> powered by <a style="color: darkgreen">Django</a>
+            </small>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+    //引入js-sha256
+    var vm=new Vue({
+        el:'#input',
+        data:{
+            sender:'',
+            receiver:'',
+            file_code:'',
+        },
+        methods:{
+            calculate:function(){
+                //获取当前时间并且将其转换为无符号字符串
+                var time=new Date().getTime().toString(16);
+                //将sender和receiver和time相加，并且进行md5加密
+                this.file_code=hex_md5("this.sender+this.receiver+time");
+                alert('文件代码：'+this.file_code);
+            }
+        }
+    })
+</script>
+</html>
