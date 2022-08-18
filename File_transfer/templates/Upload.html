@@ -32,10 +32,10 @@
             <a class="nav-link" href="/">首页</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="upload/">文件传输</a>
+            <a class="nav-link" href="/upload">文件传输</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="download/">文件下载</a>
+            <a class="nav-link" href="/download">文件下载</a>
         </li>
         <li class="nav-item">
             <!-- 下拉菜单显示‘常用网页’ -->
@@ -116,6 +116,7 @@
                     return;
                 }
                 //将已经选择的文件加入formData中
+                formData.append('file',document.getElementById('input').files[0]);
                 formData.append('file_code',this.file_code);
                 //发送请求
                 axios.post('',formData).then(function(response){

@@ -27,13 +27,22 @@ def upload(request):
 def download(request):
     if request.method == 'GET':
         return render(request, 'download.html')
-    # 创建一个字符串来接受文件提取码
-    file_extract_code = request.POST.get('downloader')
-    # print(file_extract_code)
-    # 查询所有的可以下载的文件名称
-    file_list = File_reg.objects.filter(Recieve_user=file_extract_code)
-    print(file_list)
-    return render(request, 'download.html', {'download_list': file_list})
+    if request.method == 'POST':
+        file_code = request.POST.get('File_code', None)
+        print(file_code)
+        try:
+            file_path = File_reg.objects.get(File_id=file_code).File_path
+        except File_reg.DoesNotExist:
+            return HttpResponse('File not found')
+        #用户下载位于file_path的文件
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read())
+            response['Content-Type'] = 'application/octet-stream'
+            response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_path)
+            return response
+
+
+
 
 
 def mainpage(request):

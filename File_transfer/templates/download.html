@@ -1,14 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     {% load static %}
     <meta charset="utf-8">
+    <!--  页面名称是上传页面  -->
     <title>下载页面</title>
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
     <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{%  static 'JavaScript/axios.js' %}"></script>
     <script src="{% static 'JavaScript/vue.js' %}"></script>
-</head>
-<body>
+    <script src="{% static 'JavaScript/md5.js' %}"></script>
+    <style>
+        #main{
+            background-image: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2019-04-11%2F5caeac2eeb50d.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662872346&t=15a64e6669cc3109f6b28c1e7151d1c3);
+            background-size:cover;
+        }
+        #input{
+            max-width: 600px;
+        }
+    </style>
+<body id="main">
 {% load static %}
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <a class="navbar-brand" href="#">
@@ -19,10 +32,10 @@
             <a class="nav-link" href="/">首页</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="upload/">文件传输</a>
+            <a class="nav-link" href="/upload">文件传输</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="download/">文件下载</a>
+            <a class="nav-link" href="/download">文件下载</a>
         </li>
         <li class="nav-item">
             <!-- 下拉菜单显示‘常用网页’ -->
@@ -38,16 +51,43 @@
         </li>
     </ul>
 </nav>
+<br/><br/>
+
+<div class="container bg-success" >
+输入发送者给你的文件提取代码
+</div>
 <br/><br/><br/>
-    <form action="/download/" method="post"  >
-        <fieldset>
-            <legend>下载文件</legend>
-            {% csrf_token %}
-            下载编码:<input type="text" name="downloader" placeholder="输入你拿到的下载编码"><input type="submit" value="列表">
-        </fieldset>
-    </form>
-<fieldset>
-    <legend>可下载文件列表</legend>
-    {{ download_list }}
-</fieldset>
+    <!-- 输入文件代号的输入框,背景透明 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body" id="download_info">
+                            <input type="text" class="form-control" id="input" placeholder="请输入文件代号"><br/>
+                        <button type="button" class="btn btn-primary" id="submit" @click="submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    var app = new Vue({
+        el: '#download_info',
+        data: {
+            info: '',
+        },
+        methods: {
+            submit: function () {
+                var code = document.getElementById('input').value;
+                var formData=new FormData();
+                formData.append('File_code',code);
+                //用post向/donwload发送code
+                axios.post('',formData).catch(function(error){
+                    alert(error);
+                });
+                //对返回的response地址的文件进行下载
+            }
+        }
+    });
+</script>
 </body>
