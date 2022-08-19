@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from File_transfer.models import File_reg
 from django import forms
+from django.http import HttpResponse, Http404, FileResponse, StreamingHttpResponse
+import os
 
 
 # Create your views here.
@@ -24,6 +26,17 @@ def upload(request):
             return HttpResponse('upload success')
 
 
+# 这里返回一个迭代器,防止文件过大将内存打满,这样可以保证服务的占用内存几乎没有波动
+def read_file(file_name, buf_size=409600):
+    with open(file_name, "rb") as f:
+        while True:
+            c = f.read(buf_size)
+            if c:
+                yield c
+            else:
+                break
+
+
 def download(request):
     if request.method == 'GET':
         return render(request, 'download.html')
@@ -32,17 +45,17 @@ def download(request):
         print(file_code)
         try:
             file_path = File_reg.objects.get(File_id=file_code).File_path
+            file_name = File_reg.objects.get(File_id=file_code).File_name
         except File_reg.DoesNotExist:
             return HttpResponse('File not found')
-        #用户下载位于file_path的文件
-        with open(file_path, 'rb') as f:
-            response = HttpResponse(f.read())
-            response['Content-Type'] = 'application/octet-stream'
-            response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_path)
-            return response
-
-
-
+        # 用户下载位于file_path的文件
+        try:
+            res = StreamingHttpResponse(read_file(file_path))
+            # 增加headers
+            res['steaming_content'] = "file_name"
+            return res
+        except FileNotFoundError:
+            return HttpResponse('File not found')
 
 
 def mainpage(request):

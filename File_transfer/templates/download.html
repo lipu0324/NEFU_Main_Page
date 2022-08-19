@@ -13,11 +13,12 @@
     <script src="{% static 'JavaScript/vue.js' %}"></script>
     <script src="{% static 'JavaScript/md5.js' %}"></script>
     <style>
-        #main{
+        #main {
             background-image: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2019-04-11%2F5caeac2eeb50d.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662872346&t=15a64e6669cc3109f6b28c1e7151d1c3);
-            background-size:cover;
+            background-size: cover;
         }
-        #input{
+
+        #input {
             max-width: 600px;
         }
     </style>
@@ -43,8 +44,9 @@
                 常用网页
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="https://jwc.nefu.edu.cn/index/jwglxt.htm"  target="_blank">东北林业大学教务处课程管理系统</a>
-                <a class="dropdown-item" href="http://222.27.166.246/studentHome/index"  target="_blank">瑞格平台</a>
+                <a class="dropdown-item" href="https://jwc.nefu.edu.cn/index/jwglxt.htm"
+                   target="_blank">东北林业大学教务处课程管理系统</a>
+                <a class="dropdown-item" href="http://222.27.166.246/studentHome/index" target="_blank">瑞格平台</a>
                 <a class="dropdown-item" href="https://acm.webvpn.nefu.edu.cn/" target="_blank">OJ平台</a>
                 <a class="dropdown-item" href="https://www.github.com/" target="_blank">Github</a>
             </div>
@@ -53,41 +55,98 @@
 </nav>
 <br/><br/>
 
-<div class="container bg-success" >
-输入发送者给你的文件提取代码
+<div class="container bg-success">
+    输入发送者给你的文件提取代码
 </div>
 <br/><br/><br/>
-    <!-- 输入文件代号的输入框,背景透明 -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body" id="download_info">
-                            <input type="text" class="form-control" id="input" placeholder="请输入文件代号"><br/>
-                        <button type="button" class="btn btn-primary" id="submit" @click="submit">提交</button>
-                    </div>
+<!-- 输入文件代号的输入框,背景透明 -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body" id="download_info">
+                    <input type="text" class="form-control" id="input" placeholder="请输入文件代号"><br/>
+                    <button type="button" class="btn btn-primary" id="submit" @click="submit">提交</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <script>
     var app = new Vue({
-        el: '#download_info',
-        data: {
-            info: '',
-        },
-        methods: {
-            submit: function () {
-                var code = document.getElementById('input').value;
-                var formData=new FormData();
-                formData.append('File_code',code);
-                //用post向/donwload发送code
-                axios.post('',formData).catch(function(error){
-                    alert(error);
-                });
-                //对返回的response地址的文件进行下载
+            el: '#download_info',
+            data: {
+                info: '',
+            },
+            methods: {
+                submit: function () {
+                    var code = document.getElementById('input').value;
+                    var formData = new FormData();
+                    formData.append('File_code', code);
+                    //用post向/donwload发送code
+                    axios.post('', formData, {
+                        responseType: "arraybuffer"
+                    }).then(response => {
+                            let fileName = response['steaming_content'];
+                            const blob = new Blob([response.data], {type: ''})
+                            // 通过fileReader读取这个blob
+                            const reader = new FileReader()
+                            // 将blob对象以文本的方式读出，读出完成后将会执行onload方法
+                            reader.readAsText(blob)
+                            reader.onload = e => {
+                                try {
+                                    var target = e.target.result;
+                                    // 可能会出现错误，需要进行捕获
+                                    if (target == 'File not found') {
+                                        alert(target)
+                                        return
+                                    }
+                                    else
+                                    {
+                                        alert(target.file_name);
+                                    }
+
+                                } catch (err) {
+                                    alert('error')
+                                    return
+                                    // 该异常无法将字符串转为json
+                                    // 说明返回数据是一个流文件
+                                    // 不需要处理该异常
+                                }
+                                // 如果代码能够执行到这里，说明后端给的是一个流文件
+                                // 这里可以获取header中的cotent-type设置对应的type即可下载不同类型的文件
+                                let blob = new Blob([response.data], {type: ''})
+                                if (window.navigator.msSaveOrOpenBlob) {
+                                    // 兼容IE & Edge
+                                    navigator.msSaveOrOpenBlob(blob, fileName)
+                                } else {
+                                    // 兼容不同浏览器的URL对象
+                                    const url = window.URL || window.webkitURL || window.moxURL
+                                    // 创建下载链接
+                                    const downloadHref = url.createObjectURL(blob)
+                                    // 创建a标签并为其添加属性
+                                    let downloadLink = document.createElement('a')
+                                    alert(response['steaming_content'])
+                                    downloadLink.style.display = 'none'
+                                    downloadLink.href = downloadHref
+                                    downloadLink.download = fileName
+                                    // 触发点击事件执行下载
+                                    // 火狐浏览器上a标签点击导出无效。解决办法：需要先将a标签添加到当前页面上，在执行click，之后再移除该节点，而不能直接执行click
+                                    document.body.appendChild(downloadLink)
+                                    downloadLink.click()
+                                    // 下载完成进行释放
+                                    url.revokeObjectURL(downloadLink.href)
+                                    document.body.removeChild(downloadLink)
+                                }
+                            }
+                        }
+                    ).catch(function (error) {
+                        alert(error);
+                    });
+                    //对返回的response地址的文件进行下载
+                }
             }
-        }
-    });
+        })
+    ;
 </script>
 </body>
