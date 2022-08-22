@@ -1,3 +1,5 @@
+import hashlib
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from File_transfer.models import File_reg
@@ -15,7 +17,8 @@ def upload(request):
         if File is None:
             return HttpResponse('No file')
         else:
-            file_name = File.name
+            # 计算文件的md5值
+            file_name = hashlib.md5(File.read()).hexdigest()
             file_path = './文件暂存地/' + file_name
             file_id = request.POST.get('file_code')
             # 数据存入数据库

@@ -115,7 +115,8 @@
                     alert('请计算文件代码');
                     return;
                 }
-                //将已经选择的文件加入formData中
+                alert('欢迎使用东北林业大学校内文件传输系统，文件代码：'+this.file_code+'\n'+'为了安全，我们不会在服务器保存文件名称和格式，请在下载以后自行重命名。文件名称：'+document.getElementById('input').files[0].name+'\n'+'请将该信息复制并且发送给你的接收人');
+                //将已经选择的文件加入formData中1
                 formData.append('file',document.getElementById('input').files[0]);
                 formData.append('file_code',this.file_code);
                 //发送请求
