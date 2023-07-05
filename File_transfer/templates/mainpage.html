@@ -6,13 +6,13 @@
     <meta charset="UTF-8">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'JavaScript/vue.js' %}"></script>
     <style>
         #main{
-            background-image: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2019-04-11%2F5caeac2eeb50d.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662872346&t=15a64e6669cc3109f6b28c1e7151d1c3);
+            background-image: url(https://pic1.zhimg.com/v2-8d5ebb4f0fa67e76cbdd3c468f596e98_r.jpg);
             background-size:cover;
         }
         #box{
@@ -77,24 +77,26 @@
 <br/><br/>
 <div  id="main_block">
     <div class="row" >
+        <div class="col-1 "></div>
+
         <div class="col-2 " id="box" @click="Common_websites('mail')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/mail_logo.png' %}" alt="img" style="width:100px;height:100px;" >
             <br/>东林邮件系统
         </div>
-        <div class="col-1 "></div>
+
         <div class="col-2" id="box" @click="Common_websites('webVPN')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/webvpn_logo.png' %}" alt="img" style="width:100px;height:100px;" >
             <br/>东林网络VPN
         </div>
-        <div class="col-1 "></div>
+
         <div class="col-2" id="box" @click="Common_websites('Oj')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/Oj_logo.png' %}" alt="img" style="width:100px;height:100px;" >
             <br>OJ平台
         </div>
-        <div class="col-1 "></div>
+
         <div class="col-2" id="box" @click="Common_websites('Inefu')">
             <!-- 可点击图片 -->
             <br/>
@@ -104,24 +106,25 @@
     </div>
     <br/><br/>
     <div class="row">
+        <div class="col-1 "></div>
         <div class="col-2" id="box" @click="Common_websites('jwcnew')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/教学平台_logo.png' %}" alt="img" style="width:100px;height:100px;" >
             <br/>东林教务处
         </div>
-        <div class="col-1 "></div>
+
         <div class="col-2" id="box" @click="Common_websites('scihub')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/scihub_logo.png ' %}" alt="img" style="width:80%;height:80%;" >
             <br/>Scihub
         </div>
-        <div class="col-1 "></div>
+
         <div class="col-2" id="box" @click="Common_websites('bilibili')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/bilibili.png' %}" alt="img" style="width:100px;height:100px;" class="rounded">
             <br/>哔哩哔哩
         </div>
-        <div class="col-1 "></div>
+
         <div class="col-2" id="box" @click="Common_websites('cnki')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/cnki_logo.png' %}" alt="img" style="width:75%;height:75%;" class="rounded">
@@ -129,6 +132,10 @@
         </div>
     </div><br/><br/>
         <div class="row">
+            <div class="col-1 "></div>
+            <div class="col-1 "></div>
+            <div class="col-1 "></div>
+            <div class="col-1 "></div>
             <div class="col-2 " id="box" @click="Common_websites('study_file')">
             <!-- 可点击图片 -->
             <img src="{% static 'picture/img.png' %}" alt="img" style="width:50%;height:70%;">
